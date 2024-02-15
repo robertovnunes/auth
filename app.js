@@ -1,4 +1,3 @@
-const express = require('express');
 const server = require('./conf/setup');
 const app = server.server;
 const connectDB = server.connectDB();
