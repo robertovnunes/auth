@@ -9,11 +9,12 @@ const routeDelete = require('./routes/userDelete');
 
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
+const {static} = require("express");
 
-app.get('/', (req, res)  => {
-    const App = require('./home/App').default;
-  const html = ReactDOMServer.renderToString(App);
-  res.send(html);
+app.use(static('./home/public'));
+
+app.get('/', (req, res) => {
+    res.sendFile('./home/public/index.html', { root: 'public' });
 });
 
 app.use(routeGet);
@@ -22,8 +23,8 @@ app.use(routePatch);
 app.use(routeDelete);
 
 
-app.listen(3000, () => {
+app.listen(3001, () => {
     app.locals.db = connectDB;
-    console.log('Server running on port 3000');
+    console.log('Server running on port 3001');
 });
 
