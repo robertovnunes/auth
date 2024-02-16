@@ -6,8 +6,14 @@ const routeGet = require('./routes/userGet');
 const routePost = require('./routes/userPost');
 const routePatch = require('./routes/userUpdate');
 const routeDelete = require('./routes/userDelete');
+
+const React = require('react');
+const ReactDOMServer = require('react-dom/server');
+
 app.get('/', (req, res)  => {
-    res.send('Hello World');
+    const App = require('./home/App').default;
+  const html = ReactDOMServer.renderToString(App);
+  res.send(html);
 });
 
 app.use(routeGet);
