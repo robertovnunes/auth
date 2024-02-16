@@ -11,10 +11,10 @@ const React = require('react');
 const ReactDOMServer = require('react-dom/server');
 const {static} = require("express");
 
-app.use(static('./home/public'));
+app.use(static('./public'));
 
 app.get('/', (req, res) => {
-    res.sendFile('./home/public/index.html', { root: 'public' });
+    res.sendFile('./home/src/index.js', { root: 'public' });
 });
 
 app.use(routeGet);
