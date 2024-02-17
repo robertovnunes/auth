@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test Page</title>
+    <!--link rel="stylesheet" href="/style.css"-->
+</head>
+<body>
+    <h1>Teste da API RESTful</h1>
+    <div id="output"></div>
+    <script>
+        fetch('/users')
+            .then(response => {
+                response.json();
+            })
+            .then(data => {
+                data.message.forEach(element => {
+                    console.log(`elemento: ${element}`);
+                    document.getElementById('output').innerHTML = `<p>${element}</p>`;
+                });
+            });
+    </script>
+</body>
+</html>

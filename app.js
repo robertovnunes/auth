@@ -2,6 +2,10 @@ const server = require('./conf/setup');
 const app = server.server;
 const connectDB = server.connectDB();
 
+const path = require('path');
+const bodyParser = require('body-parser');
+const ejs = require('ejs');
+
 const routeGet = require('./routes/userGet');
 const routePost = require('./routes/userPost');
 const routePatch = require('./routes/userUpdate');
@@ -9,12 +13,13 @@ const routeDelete = require('./routes/userDelete');
 
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
-const {static} = require("express");
+const express = require("express");
 
-app.use(static('./public'));
+app.set('view engine', 'ejs');
 
+// Rota principal
 app.get('/', (req, res) => {
-    res.sendFile('./home/src/index.js', { root: 'public' });
+    res.render('index');
 });
 
 app.use(routeGet);
