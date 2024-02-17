@@ -26,7 +26,7 @@ router.get('/users', async (req, res) => {
 router.get('/user/:email', async (req, res) => {
     try {
         const email = req.params.email;
-        const user = await User.findOne({email});
+        const user = await User.findOne({email: email});
         if (user) {
             res.status(200).json(user);
         } else {

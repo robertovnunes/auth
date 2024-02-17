@@ -1,17 +1,2 @@
 node_modules
 
-home/node_modules
-home/.pnp
-home/.pnp.js
-home/coverage
-home/build
-
-home/.DS_Store
-home/.env.local
-home/.env.development.local
-home/.env.test.local
-home/.env.production.local
-
-home/npm-debug.log*
-home/yarn-debug.log*
-home/yarn-error.log*

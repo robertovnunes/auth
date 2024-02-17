@@ -1,25 +1,51 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Test Page</title>
-    <!--link rel="stylesheet" href="/style.css"-->
-</head>
-<body>
-    <h1>Teste da API RESTful</h1>
-    <div id="output"></div>
-    <script>
-        fetch('/users')
-            .then(response => {
-                response.json();
-            })
-            .then(data => {
-                data.message.forEach(element => {
-                    console.log(`elemento: ${element}`);
-                    document.getElementById('output').innerHTML = `<p>${element}</p>`;
-                });
-            });
-    </script>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>API Test Page</title>
+        <!--link rel="stylesheet" href="/style.css"-->
+    </head>
+    <body>
+        <h1>AuthAPI - Api para a utenticação de usuários</h1>
+        <div id="output">
+            <h2>Getting all users</h2>
+            <div id="getall">
+                <script>
+                    fetch('/users')
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(user => {
+                                document.getElementById('getall').innerHTML = `<ul>
+                            <li>${user.name} ${user.email}</li>
+                        </ul>`;
+                            });
+                        })
+                </script>
+            </div>
+            <div id="getuser">
+                <h2>Getting user by e-mail</h2>
+                <form action="/user" method="get">
+                    <label for="email">E-mail:</label>
+                    <input type="text" name="email" id="email" placeholder="e-mail">
+                    <input type="submit" value="Get user">
+                </form>
+                <div id="user"></div>
+                <script>
+                    document.getElementById('getuser').addEventListener('submit', function (e) {
+                        e.preventDefault();
+                        fetch(`/user/${document.getElementById('email').value}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log(data);
+                                document.getElementById('user').innerHTML = `<ul>
+                            <li>${data.name} ${data.email}</li>
+                        </ul>`;
+                            })
+                    })
+                </script>
+            </div>
+        </div>
+
 </body>
 </html>
