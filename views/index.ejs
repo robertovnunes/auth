@@ -1,87 +1,92 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>API Test Page</title>
-        <!--link rel="stylesheet" href="/style.css"-->
-    </head>
-    <body>
-        <h1>AuthAPI - Api para a utenticação de usuários</h1>
-        <div id="output">
-            <h2>Getting all users</h2>
-            <div id="getall">
-                <script>
-                    fetch('/users')
-                        .then(response => response.json())
-                        .then(data => {
-                            data.forEach(user => {
-                                document.getElementById('getall').innerHTML = `<ul>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test Page</title>
+    <!--link rel="stylesheet" href="/style.css"-->
+</head>
+<body>
+<h1>AuthAPI - Api para a utenticação de usuários</h1>
+<div id="output">
+    <h2>Getting all users</h2>
+    <div id="getall">
+        <script>
+            fetch('/users')
+                .then(response => response.json())
+                .then(data => {
+                    let html = '';
+                    data.forEach(user => {
+                        html += `<ul>
                             <li>${user.name} ${user.email}</li>
                         </ul>`;
-                            });
-                        })
-                </script>
-            </div>
-            <div id="getuser">
-                <h2>Getting user by e-mail</h2>
-                <form action="/user" method="get">
-                    <label for="useremail">E-mail:</label>
-                    <input type="text" name="useremail" id="useremail" placeholder="e-mail">
-                    <input type="submit" value="Get user">
-                </form>
-                <div id="user"></div>
-                <script>
-                    document.getElementById('getuser').addEventListener('submit', function (e) {
-                        e.preventDefault();
-                        fetch(`/user/${document.getElementById('useremail').value}`)
-                            .then(response => response.json())
-                            .then(data => {
-                                document.getElementById('user').innerHTML = `<ul>
+                    });
+                    document.getElementById('getall').innerHTML = html;
+
+                })
+        </script>
+    </div>
+    <div id="getuser">
+        <h2>Getting user by e-mail</h2>
+        <form action="/user" method="get">
+            <label for="useremail">E-mail:</label>
+            <input type="text" name="useremail" id="useremail" placeholder="e-mail">
+            <input type="submit" value="Get user">
+        </form>
+        <div id="user"></div>
+        <script>
+            document.getElementById('getuser').addEventListener('submit', function (e) {
+                e.preventDefault();
+                fetch(`/user/${document.getElementById('useremail').value}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('user').innerHTML = `<ul>
                             <li>${data.name} ${data.email}</li>
                         </ul>`;
-                            })
                     })
-                </script>
-            </div>
-            <div id="postuser">
-                <h2>Creating a new user</h2>
-                <form action="/user" method="post">
-                    <label for="name">Name:</label>
-                    <input type="text" name="name" id="name" placeholder="name">
-                    <label for="email">E-mail:</label>
-                    <input type="text" name="email" id="email" placeholder="e-mail">
-                    <label for="password">Password:</label>
-                    <input type="password" name="password" id="password" placeholder="password">
-                    <label for="cpassword">Confirm your password:</label>
-                    <input type="password" name="cpassword" id="cpassword" placeholder="password confirmation">
-                    <input type="submit" value="Create user">
-                </form>
-                <div id="newuser"></div>
-                <script>
-                    document.getElementById('postuser').addEventListener('submit', function (e) {
-                        e.preventDefault();
-                        fetch('/user', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                name: document.getElementById('name').value,
-                                email: document.getElementById('email').value
-                            })
-                        })
-                            .then(response => response.json())
-                            .then(data => {
-                                console.log(data);
-                                document.getElementById('newuser').innerHTML = `<ul>
+            })
+        </script>
+    </div>
+    <div id="postuser">
+        <h2>Creating a new user</h2>
+        <form action="/user" method="post">
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" placeholder="name">
+            <label for="email">E-mail:</label>
+            <input type="email" name="email" id="email" placeholder="e-mail">
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" placeholder="password">
+            <label for="cpassword">Confirm your password:</label>
+            <input type="password" name="cpassword" id="cpassword" placeholder="password confirmation">
+            <input type="submit" value="Create user">
+        </form>
+        <div id="newuser"></div>
+        <script>
+            document.getElementById('postuser').addEventListener('submit', function (e) {
+                e.preventDefault();
+                fetch('/user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
+                        password: document.getElementById('password').value,
+                        role: 'user'
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        document.getElementById('newuser').innerHTML = `<ul>
                             <li>${data.name} ${data.email}</li>
                         </ul>`;
-                            })
-                    })
-                </script>
-            </div>
-        </div>
+                    });
+            });
+        </script>
+    </div>
+</div>
 
 </body>
 </html>
