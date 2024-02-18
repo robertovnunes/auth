@@ -65,6 +65,13 @@
             </form>
             <div id="newuser"></div>
             <script>
+                const bcrypt = require('bcryptjs');
+                function hashPassword(password) {
+                    const salt = bcrypt.genSaltSync(10);
+                    hash = bcrypt.hashSync(password, salt);
+                    console.log(hash);
+                    return hash;
+                }
                 document.getElementById('postuser').addEventListener('submit', function (e) {
                     e.preventDefault();
                     fetch('/user', {
@@ -75,14 +82,14 @@
                         body: JSON.stringify({
                             name: document.getElementById('name').value,
                             email: document.getElementById('email').value,
-                            password: document.getElementById('password').value,
+                            password: hashPassword(document.getElementById('password').value),
                             role: 'user'
                         })
                     })
                         .then(response => response.json())
                         .then(data => {
                             console.log(data);
-                            location.reload();
+                            //location.reload();
                             document.getElementById('newuser').innerHTML = `<ul>
                             <li>${data.name} ${data.email}</li>
                         </ul>`;
@@ -92,20 +99,20 @@
         </div>
         <div id="deluser">
             <h2>Deleting a user</h2>
-            <form action="/user" method="delete">
-                <label for="useremail">E-mail:</label>
-                <input type="text" name="useremail" id="useremail" placeholder="e-mail">
+            <form action="/user">
+                <label for="user">E-mail:</label>
+                <input type="text" name="user" id="user" placeholder="e-mail">
                 <input type="submit" value="Delete user">
             </form>
             <script>
                 document.getElementById('deluser').addEventListener('submit', function (e) {
                     e.preventDefault();
                     try {
-                        fetch(`/user/${document.getElementById('useremail').value}`, {
+                        fetch(`/user/${document.getElementById('user').value}`, {
                             method: 'DELETE'
                         })
                             .then(response => {
-                                if (response.status == 200) {
+                                if (response.status === 200) {
                                     alert('User deleted');
                                     location.reload();
                                 } else {
@@ -122,12 +129,12 @@
         </div>
         <div id="patchuser">
             <h2>Updating a user</h2>
-            <form action="/user" method="patch">
-                <label for="id">ID:</label>
+            <form action="/user">
+                <label for="userid">ID:</label>
                 <input type="text" name="userid" id="userid" placeholder="id">
-                <label for="name">Name:</label>
+                <label for="updtname">Name:</label>
                 <input type="text" name="updtname" id="updtname" placeholder="name">
-                <label for="email">E-mail:</label>
+                <label for="updtemail">E-mail:</label>
                 <input type="email" name="updtemail" id="updtemail" placeholder="e-mail">
                 <input type="submit" value="Update user">
             </form>
