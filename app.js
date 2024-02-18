@@ -1,4 +1,4 @@
-const server = require('./conf/setup');
+const server = require('./api/conf/setup');
 const app = server.server;
 const connectDB = server.connectDB();
 
@@ -6,10 +6,10 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
 
-const routeGet = require('./routes/userGet');
-const routePost = require('./routes/userPost');
-const routePatch = require('./routes/userUpdate');
-const routeDelete = require('./routes/userDelete');
+const routeGet = require('./api/routes/userGet');
+const routePost = require('./api/routes/userPost');
+const routePatch = require('./api/routes/userUpdate');
+const routeDelete = require('./api/routes/userDelete');
 
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
