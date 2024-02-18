@@ -11,8 +11,9 @@
 <body>
     <h1>AuthAPI - Api para a utenticação de usuários</h1>
     <div id="output">
-        <h2>Getting all users</h2>
         <div id="getall">
+            <h2>Getting all users</h2>
+            <div id="allusers"></div>
             <script>
                 fetch('/users')
                     .then(response => response.json())
@@ -23,7 +24,7 @@
                             <li>${user.name} ${user.email} ${user.role}</li>
                         </ul>`;
                         });
-                        document.getElementById('getall').innerHTML = html;
+                        document.getElementById('allusers').innerHTML = html;
 
                     })
             </script>
@@ -43,7 +44,7 @@
                         .then(response => response.json())
                         .then(data => {
                             document.getElementById('user').innerHTML = `<ul>
-                            <li>${data.name} ${data.email} ${data.role}</li>
+                            <li>${data.name} ${data.email} ${data.role} ${data._id}</li>
                         </ul>`;
                         })
                 })
@@ -99,24 +100,65 @@
             <script>
                 document.getElementById('deluser').addEventListener('submit', function (e) {
                     e.preventDefault();
-                    try{
+                    try {
                         fetch(`/user/${document.getElementById('useremail').value}`, {
                             method: 'DELETE'
                         })
                             .then(response => {
-                                if(response.status == 200){
+                                if (response.status == 200) {
                                     alert('User deleted');
                                     location.reload();
-                                }else{
+                                } else {
                                     console.log(response.status);
                                     alert('User not found');
                                 }
                             })
-                            
-                    }catch(err){
+
+                    } catch (err) {
                         console.log(err);
                     }
                 })
+            </script>
+        </div>
+        <div id="patchuser">
+            <h2>Updating a user</h2>
+            <form action="/user" method="patch">
+                <label for="id">ID:</label>
+                <input type="text" name="userid" id="userid" placeholder="id">
+                <label for="name">Name:</label>
+                <input type="text" name="updtname" id="updtname" placeholder="name">
+                <label for="email">E-mail:</label>
+                <input type="email" name="updtemail" id="updtemail" placeholder="e-mail">
+                <input type="submit" value="Update user">
+            </form>
+            <script>
+                document.getElementById('patchuser').addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    fetch(`/user/${document.getElementById('userid').value}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            name: document.getElementById('updtname').value,
+                            email: document.getElementById('updtemail').value,
+                            role: 'user'
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            let html = '';
+                            data.forEach(user => {
+                                console.log(user);
+                                html += `<ul>
+                                    <li>${user.name} ${user.email} ${user.role}</li>
+                                </ul>`;
+                            });
+                            document.getElementById('allusers').innerHTML = html;
+                            //location.reload();
+                        });
+                });
             </script>
         </div>
     </div>
