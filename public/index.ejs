@@ -4,20 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <title>API Test Page</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 <div id="output">
-    <h1>AuthAPI - Api para a utenticação de usuários</h1>
+    <h1>AuthAPI - Api para autenticação de usuários</h1>
     <div class="panel">
         <div class="panel-header">
             <h2>Get all users</h2>
         </div>
         <div class="panel-content">
             <div id="getall">
-                <h2>Getting all users</h2>
+                <h3>Getting all users</h3>
                 <button name="btnget" id="btnget">Show all users</button>
                 <button id="btnhide">Hide all users</button>
                 <div id="allusers"></div>
@@ -50,7 +51,7 @@
         </div>
         <div class="panel-content">
             <div id="getuser">
-                <h2>Getting user by e-mail</h2>
+                <h3>Getting user by e-mail</h3>
                 <form action="/user" method="get">
                     <label for="useremail">E-mail:</label>
                     <input type="text" name="useremail" id="useremail" placeholder="e-mail">
@@ -78,7 +79,7 @@
         </div>
         <div class="panel-content">
             <div id="postuser">
-                <h2>Creating a new user</h2>
+                <h3>Creating a new user</h3>
                 <form action="/user" method="post">
                     <label for="name">Name:</label>
                     <input type="text" name="name" id="name" placeholder="name">
@@ -122,11 +123,11 @@
     </div>
     <div class="panel">
         <div class="panel-header">
-            <h3>Delete user</h3>
+            <h2>Delete user</h2>
         </div>
         <div class="panel-content">
             <div id="deluser">
-                <h2>Deleting a user</h2>
+                <h3>Deleting a user</h3>
                 <form action="/user">
                     <label for="userdelete">E-mail:</label>
                     <input type="text" name="userdelete" id="userdelete" placeholder="e-mail">
@@ -158,11 +159,11 @@
     </div>
     <div class="panel">
         <div class="panel-header">
-            <h3>Patch user</h3>
+            <h2>Patch user</h2>
         </div>
         <div class="panel-content">
             <div id="patchuser">
-                <h2>Updating a user</h2>
+                <h3>Updating a user</h3>
                 <form action="/user">
                     <label for="userid">ID:</label>
                     <input type="text" name="userid" id="userid" placeholder="id">
