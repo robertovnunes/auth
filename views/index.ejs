@@ -65,34 +65,27 @@
             </form>
             <div id="newuser"></div>
             <script>
-                const bcrypt = require('bcryptjs');
-                function hashPassword(password) {
-                    const salt = bcrypt.genSaltSync(10);
-                    hash = bcrypt.hashSync(password, salt);
-                    console.log(hash);
-                    return hash;
-                }
-                document.getElementById('postuser').addEventListener('submit', function (e) {
+                document.getElementById('postuser').addEventListener('submit', async function (e) {
                     e.preventDefault();
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const password = document.getElementById('password').value;
+                    console.log(name + ' ' + email + ' ' + password);
                     fetch('/user', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            name: document.getElementById('name').value,
-                            email: document.getElementById('email').value,
-                            password: hashPassword(document.getElementById('password').value),
+                            name: name,
+                            email: email,
+                            password: password,
                             role: 'user'
                         })
                     })
                         .then(response => response.json())
                         .then(data => {
-                            console.log(data);
-                            //location.reload();
-                            document.getElementById('newuser').innerHTML = `<ul>
-                            <li>${data.name} ${data.email}</li>
-                        </ul>`;
+                            location.reload();
                         });
                 });
             </script>
@@ -100,15 +93,15 @@
         <div id="deluser">
             <h2>Deleting a user</h2>
             <form action="/user">
-                <label for="user">E-mail:</label>
-                <input type="text" name="user" id="user" placeholder="e-mail">
+                <label for="userdelete">E-mail:</label>
+                <input type="text" name="userdelete" id="userdelete" placeholder="e-mail">
                 <input type="submit" value="Delete user">
             </form>
             <script>
                 document.getElementById('deluser').addEventListener('submit', function (e) {
                     e.preventDefault();
                     try {
-                        fetch(`/user/${document.getElementById('user').value}`, {
+                        fetch(`/user/${document.getElementById('userdelete').value}`, {
                             method: 'DELETE'
                         })
                             .then(response => {
@@ -116,7 +109,6 @@
                                     alert('User deleted');
                                     location.reload();
                                 } else {
-                                    console.log(response.status);
                                     alert('User not found');
                                 }
                             })
@@ -154,16 +146,7 @@
                     })
                         .then(response => response.json())
                         .then(data => {
-                            console.log(data);
-                            let html = '';
-                            data.forEach(user => {
-                                console.log(user);
-                                html += `<ul>
-                                    <li>${user.name} ${user.email} ${user.role}</li>
-                                </ul>`;
-                            });
-                            document.getElementById('allusers').innerHTML = html;
-                            //location.reload();
+                            location.reload();
                         });
                 });
             </script>

@@ -1,11 +1,14 @@
 const { Router } = require('express');
+const bcrypt = require('bcryptjs');
+
 const router = Router();
 const User = require('../models/User');
 
 router.post('/user', async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
-        const user = { name, email, password, role };
+        let { name, email, password, role } = req.body;
+        const hash = await bcrypt.hash(password, 10);
+        password = hash;
         if (!name || !email || !password || !role) {
             if(!name){
                 res.status(400).json({ error: 'Name is required' });
@@ -20,7 +23,7 @@ router.post('/user', async (req, res) => {
             }
             return;
         }
-
+        const user = { name, email, password, role };
         const userExists = await User.findOne().where('email').equals(email);
         if(userExists != null){
             res.status(400).json({error: 'Email already exists'});
@@ -29,7 +32,6 @@ router.post('/user', async (req, res) => {
         await User.create(user);
         res.status(201).json({ message: 'User created successfully' });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'An error occurred while creating the user' });
     }
 });

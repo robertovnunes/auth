@@ -13,7 +13,6 @@ router.patch('/user/:id', async (req, res) => {
                 return;
             }
             let users = await User.find();
-            console.log(users);
             res.status(200).json({message: 'User updated successfully', data:users});
         } catch (err) {
             console.error(err);
