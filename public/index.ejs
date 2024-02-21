@@ -11,7 +11,7 @@
 
 <body>
 <div id="output">
-    <h1>AuthAPI - Api para autenticação de usuários</h1>
+    <h1>AuthAPI - User Authentication API</h1>
     <div class="panel">
         <div class="panel-header">
             <h2>Get all users</h2>
@@ -24,7 +24,7 @@
                 <div id="allusers"></div>
                 <script>
                     document.getElementById('btnget').addEventListener('click', function () {
-                        fetch('/users')
+                        fetch('/api/users')
                             .then(response => response.json())
                             .then(data => {
                                 let html = '';
@@ -52,7 +52,7 @@
         <div class="panel-content">
             <div id="getuser">
                 <h3>Getting user by e-mail</h3>
-                <form action="/user" method="get">
+                <form action="/api/user" method="get">
                     <label for="useremail">E-mail:</label>
                     <input type="text" name="useremail" id="useremail" placeholder="e-mail">
                     <input type="submit" value="Get user">
@@ -61,7 +61,7 @@
                 <script>
                     document.getElementById('getuser').addEventListener('submit', function (e) {
                         e.preventDefault();
-                        fetch(`/user/${document.getElementById('useremail').value}`)
+                        fetch(`/api/user/${document.getElementById('useremail').value}`)
                             .then(response => response.json())
                             .then(data => {
                                 document.getElementById('user').innerHTML = `<ul>
@@ -80,7 +80,7 @@
         <div class="panel-content">
             <div id="postuser">
                 <h3>Creating a new user</h3>
-                <form action="/user" method="post">
+                <form action="/api/user" method="post">
                     <label for="name">Name:</label>
                     <input type="text" name="name" id="name" placeholder="name">
                     <label for="email">E-mail:</label>
@@ -98,8 +98,8 @@
                         const name = document.getElementById('name').value;
                         const email = document.getElementById('email').value;
                         const password = document.getElementById('password').value;
-                        console.log(name + ' ' + email + ' ' + password);
-                        fetch('/user', {
+                        const cpass = document.getElementById('cpassword').value;
+                        fetch('/api/user', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -108,13 +108,21 @@
                                 name: name,
                                 email: email,
                                 password: password,
+                                cpass: cpass,
                                 role: 'user'
                             })
                         })
-                            .then(response => response.json())
-                            .then(() => {
-                                alert("User created successfully")
-                                location.reload();
+                            .then(response => {
+                                if (response.status === 201) {
+                                    alert('User created');
+                                    location.reload();
+                                } else {
+                                    alert('User not created ');
+                                }
+                            })
+                            .then()
+                            .catch(err => {
+                                console.log(err);
                             });
                     });
                 </script>
@@ -128,7 +136,7 @@
         <div class="panel-content">
             <div id="deluser">
                 <h3>Deleting a user</h3>
-                <form action="/user">
+                <form action="/api/user">
                     <label for="userdelete">E-mail:</label>
                     <input type="text" name="userdelete" id="userdelete" placeholder="e-mail">
                     <input type="submit" value="Delete user">
@@ -137,7 +145,7 @@
                     document.getElementById('deluser').addEventListener('submit', function (e) {
                         e.preventDefault();
                         try {
-                            fetch(`/user/${document.getElementById('userdelete').value}`, {
+                            fetch(`/api/user/${document.getElementById('userdelete').value}`, {
                                 method: 'DELETE'
                             })
                                 .then(response => {
@@ -164,7 +172,7 @@
         <div class="panel-content">
             <div id="patchuser">
                 <h3>Updating a user</h3>
-                <form action="/user">
+                <form action="/api/user">
                     <label for="userid">ID:</label>
                     <input type="text" name="userid" id="userid" placeholder="id">
                     <label for="updtname">Name:</label>
@@ -176,7 +184,7 @@
                 <script>
                     document.getElementById('patchuser').addEventListener('submit', function (e) {
                         e.preventDefault();
-                        fetch(`/user/${document.getElementById('userid').value}`, {
+                        fetch(`/api/user/${document.getElementById('userid').value}`, {
                             method: 'PATCH',
                             headers: {
                                 'Content-Type': 'application/json'
