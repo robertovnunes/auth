@@ -204,6 +204,45 @@
             </div>
         </div>
     </div>
+    <div class="panel">
+        <div class="panel-header">
+            <h2>Post login</h2>
+        </div>
+        <div class="panel-content">
+            <div id="postlogin">
+                <h3>Logging in</h3>
+                <form action="/api/login" method="post">
+                    <label for="loginemail">E-mail:</label>
+                    <input type="text" name="loginemail" id="loginemail" placeholder="e-mail">
+                    <label for="loginpassword">Password:</label>
+                    <input type="password" name="loginpassword" id="loginpassword" placeholder="password">
+                    <input type="submit" value="Login">
+                </form>
+                <div id="login"></div>
+                <script>
+                    document.getElementById('postlogin').addEventListener('submit', function (e) {
+                        e.preventDefault();
+                        fetch('/api/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                email: document.getElementById('loginemail').value,
+                                password: document.getElementById('loginpassword').value
+                            })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                document.getElementById('login').innerHTML = `<ul>
+                            <li>${data.message}</li>
+                        </ul>`;
+                            })
+                    })
+                </script>
+            </div>
+        
+    </div>
 </div>
 <script>
     document.querySelectorAll('.panel-header').forEach(header => {
