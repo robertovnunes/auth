@@ -10,6 +10,7 @@ function generateToken(user) {
       name: user.name,
       email: user.email,
     };
+}
 
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
