@@ -27,11 +27,11 @@ router.get('/users', async (req, res) => {
     }
 });
 
-router.get('/user/:email', async (req, res) => {
+router.get('/user/email/:email', async (req, res) => {
     try {
         console.log('GET /user/:email');
         const email = req.params.email;
-        const user = await User.findOne({email: email});
+        const user = await User.findOne({email: email}, '-password');
         if (user) {
             console.log('200 [OK]');
             res.status(200).json(user);

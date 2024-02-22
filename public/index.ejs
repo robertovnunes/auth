@@ -5,252 +5,262 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <title>API Test Page</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<div id="output">
-    <h1>AuthAPI - User Authentication API</h1>
-    <div class="panel">
-        <div class="panel-header">
-            <h2>Get all users</h2>
-        </div>
-        <div class="panel-content">
-            <div id="getall">
-                <h3>Getting all users</h3>
-                <button name="btnget" id="btnget">Show all users</button>
-                <button id="btnhide">Hide all users</button>
-                <div id="allusers"></div>
-                <script>
-                    document.getElementById('btnget').addEventListener('click', function () {
-                        fetch('/api/users')
-                            .then(response => response.json())
-                            .then(data => {
-                                let html = '';
-                                data.forEach(user => {
-                                    html += `<ul>
+    <div id="output">
+        <div class="header">
+            <div class="header-left">
+                <img src="/favicon.ico">
+            </div>
+            <div class="header-right">
+                <h1>AuthAPI - User Authentication API</h1>
+                <h3>[NODE-MONGO-JWT]</h3>
+            </div>
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Get all users</h2>
+                </div>
+                <div class="panel-content">
+                    <div id="getall">
+                        <h3>Getting all users</h3>
+                        <button name="btnget" id="btnget">Show all users</button>
+                        <button id="btnhide">Hide all users</button>
+                        <div id="allusers"></div>
+                        <script>
+                            document.getElementById('btnget').addEventListener('click', function () {
+                                fetch('/api/users')
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        let html = '';
+                                        data.forEach(user => {
+                                            html += `<ul>
                                                 <li>${user.name} ${user.email} ${user.role}</li>
                                             </ul>`;
-                                });
-                                document.getElementById('allusers').innerHTML = html;
-                                document.getElementById('allusers').style.display = 'block';
+                                        });
+                                        document.getElementById('allusers').innerHTML = html;
+                                        document.getElementById('allusers').style.display = 'block';
 
-                            })
-                    });
-                    document.getElementById('btnhide').addEventListener('click', function() {
-                        document.getElementById('allusers').style.display = 'none';
-                    });
-                </script>
+                                    })
+                            });
+                            document.getElementById('btnhide').addEventListener('click', function () {
+                                document.getElementById('allusers').style.display = 'none';
+                            });
+                        </script>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="panel">
-        <div class="panel-header">
-            <h2>Get user</h2>
-        </div>
-        <div class="panel-content">
-            <div id="getuser">
-                <h3>Getting user by e-mail</h3>
-                <form action="/api/user" method="get">
-                    <label for="useremail">E-mail:</label>
-                    <input type="text" name="useremail" id="useremail" placeholder="e-mail">
-                    <input type="submit" value="Get user">
-                </form>
-                <div id="user"></div>
-                <script>
-                    document.getElementById('getuser').addEventListener('submit', function (e) {
-                        e.preventDefault();
-                        fetch(`/api/user/${document.getElementById('useremail').value}`)
-                            .then(response => response.json())
-                            .then(data => {
-                                document.getElementById('user').innerHTML = `<ul>
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Get user</h2>
+                </div>
+                <div class="panel-content">
+                    <div id="getuser">
+                        <h3>Getting user by e-mail</h3>
+                        <form action="/api/user/email" method="get">
+                            <label for="useremail">E-mail:</label>
+                            <input type="text" name="useremail" id="useremail" placeholder="e-mail">
+                            <input type="submit" value="Get user">
+                        </form>
+                        <div id="user"></div>
+                        <script>
+                            document.getElementById('getuser').addEventListener('submit', function (e) {
+                                e.preventDefault();
+                                fetch(`/api/user/email/${document.getElementById('useremail').value}`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        document.getElementById('user').innerHTML = `<ul>
                             <li>${data.name} ${data.email} ${data.role} ${data._id}</li>
                         </ul>`;
+                                    })
                             })
-                    })
-                </script>
+                        </script>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="panel">
-        <div class="panel-header">
-            <h2>Post user</h2>
-        </div>
-        <div class="panel-content">
-            <div id="postuser">
-                <h3>Creating a new user</h3>
-                <form action="/api/user" method="post">
-                    <label for="name">Name:</label>
-                    <input type="text" name="name" id="name" placeholder="name">
-                    <label for="email">E-mail:</label>
-                    <input type="email" name="email" id="email" placeholder="e-mail">
-                    <label for="password">Password:</label>
-                    <input type="password" name="password" id="password" placeholder="password">
-                    <label for="cpassword">Confirm your password:</label>
-                    <input type="password" name="cpassword" id="cpassword" placeholder="password confirmation">
-                    <input type="submit" value="Create user">
-                </form>
-                <div id="newuser"></div>
-                <script>
-                    document.getElementById('postuser').addEventListener('submit', async function (e) {
-                        e.preventDefault();
-                        const name = document.getElementById('name').value;
-                        const email = document.getElementById('email').value;
-                        const password = document.getElementById('password').value;
-                        const cpass = document.getElementById('cpassword').value;
-                        fetch('/api/user', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                name: name,
-                                email: email,
-                                password: password,
-                                cpass: cpass,
-                                role: 'user'
-                            })
-                        })
-                            .then(response => {
-                                if (response.status === 201) {
-                                    alert('User created');
-                                    location.reload();
-                                } else if (response.status === 400) {
-                                    alert('User not created ');
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Post user</h2>
+                </div>
+                <div class="panel-content">
+                    <div id="postuser">
+                        <h3>Creating a new user</h3>
+                        <form action="/api/user" method="post">
+                            <label for="name">Name:</label>
+                            <input type="text" name="name" id="name" placeholder="name">
+                            <label for="email">E-mail:</label>
+                            <input type="email" name="email" id="email" placeholder="e-mail">
+                            <label for="password">Password:</label>
+                            <input type="password" name="password" id="password" placeholder="password">
+                            <label for="cpassword">Confirm your password:</label>
+                            <input type="password" name="cpassword" id="cpassword" placeholder="password confirmation">
+                            <input type="submit" value="Create user">
+                        </form>
+                        <div id="newuser"></div>
+                        <script>
+                            document.getElementById('postuser').addEventListener('submit', async function (e) {
+                                e.preventDefault();
+                                const name = document.getElementById('name').value;
+                                const email = document.getElementById('email').value;
+                                const password = document.getElementById('password').value;
+                                const cpass = document.getElementById('cpassword').value;
+                                fetch('/api/user', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        name: name,
+                                        email: email,
+                                        password: password,
+                                        cpass: cpass,
+                                        role: 'user'
+                                    })
+                                })
+                                    .then(response => {
+                                        if (response.status === 201) {
+                                            alert('User created');
+                                            location.reload();
+                                        } else if (response.status === 400) {
+                                            alert('User not created ');
+                                        }
+                                    })
+                                    .then()
+                                    .catch(err => {
+                                        console.log(err);
+                                    });
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Delete user</h2>
+                </div>
+                <div class="panel-content">
+                    <div id="deluser">
+                        <h3>Deleting a user</h3>
+                        <form action="/api/user">
+                            <label for="userdelete">E-mail:</label>
+                            <input type="text" name="userdelete" id="userdelete" placeholder="e-mail">
+                            <input type="submit" value="Delete user">
+                        </form>
+                        <script>
+                            document.getElementById('deluser').addEventListener('submit', function (e) {
+                                e.preventDefault();
+                                try {
+                                    fetch(`/api/user/${document.getElementById('userdelete').value}`, {
+                                        method: 'DELETE'
+                                    })
+                                        .then(response => {
+                                            if (response.status === 200) {
+                                                alert('User deleted');
+                                                location.reload();
+                                            } else {
+                                                alert('User not found');
+                                            }
+                                        })
+
+                                } catch (err) {
+                                    console.log(err);
                                 }
                             })
-                            .then()
-                            .catch(err => {
-                                console.log(err);
-                            });
-                    });
-                </script>
+                        </script>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="panel">
-        <div class="panel-header">
-            <h2>Delete user</h2>
-        </div>
-        <div class="panel-content">
-            <div id="deluser">
-                <h3>Deleting a user</h3>
-                <form action="/api/user">
-                    <label for="userdelete">E-mail:</label>
-                    <input type="text" name="userdelete" id="userdelete" placeholder="e-mail">
-                    <input type="submit" value="Delete user">
-                </form>
-                <script>
-                    document.getElementById('deluser').addEventListener('submit', function (e) {
-                        e.preventDefault();
-                        try {
-                            fetch(`/api/user/${document.getElementById('userdelete').value}`, {
-                                method: 'DELETE'
-                            })
-                                .then(response => {
-                                    if (response.status === 200) {
-                                        alert('User deleted');
-                                        location.reload();
-                                    } else {
-                                        alert('User not found');
-                                    }
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Patch user</h2>
+                </div>
+                <div class="panel-content">
+                    <div id="patchuser">
+                        <h3>Updating a user</h3>
+                        <form action="/api/user">
+                            <label for="userid">ID:</label>
+                            <input type="text" name="userid" id="userid" placeholder="id">
+                            <label for="updtname">Name:</label>
+                            <input type="text" name="updtname" id="updtname" placeholder="name">
+                            <label for="updtemail">E-mail:</label>
+                            <input type="email" name="updtemail" id="updtemail" placeholder="e-mail">
+                            <input type="submit" value="Update user">
+                        </form>
+                        <script>
+                            document.getElementById('patchuser').addEventListener('submit', function (e) {
+                                e.preventDefault();
+                                fetch(`/api/user/${document.getElementById('userid').value}`, {
+                                    method: 'PATCH',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        name: document.getElementById('updtname').value,
+                                        email: document.getElementById('updtemail').value,
+                                        role: 'user'
+                                    })
                                 })
-
-                        } catch (err) {
-                            console.log(err);
-                        }
-                    })
-                </script>
-            </div>
-        </div>
-    </div>
-    <div class="panel">
-        <div class="panel-header">
-            <h2>Patch user</h2>
-        </div>
-        <div class="panel-content">
-            <div id="patchuser">
-                <h3>Updating a user</h3>
-                <form action="/api/user">
-                    <label for="userid">ID:</label>
-                    <input type="text" name="userid" id="userid" placeholder="id">
-                    <label for="updtname">Name:</label>
-                    <input type="text" name="updtname" id="updtname" placeholder="name">
-                    <label for="updtemail">E-mail:</label>
-                    <input type="email" name="updtemail" id="updtemail" placeholder="e-mail">
-                    <input type="submit" value="Update user">
-                </form>
-                <script>
-                    document.getElementById('patchuser').addEventListener('submit', function (e) {
-                        e.preventDefault();
-                        fetch(`/api/user/${document.getElementById('userid').value}`, {
-                            method: 'PATCH',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                name: document.getElementById('updtname').value,
-                                email: document.getElementById('updtemail').value,
-                                role: 'user'
-                            })
-                        })
-                            .then(response => response.json())
-                            .then(() => {
-                                location.reload();
+                                    .then(response => response.json())
+                                    .then(() => {
+                                        location.reload();
+                                    });
                             });
-                    });
-                </script>
+                        </script>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="panel">
-        <div class="panel-header">
-            <h2>Post login</h2>
-        </div>
-        <div class="panel-content">
-            <div id="postlogin">
-                <h3>Logging in</h3>
-                <form action="/api/login" method="post">
-                    <label for="loginemail">E-mail:</label>
-                    <input type="text" name="loginemail" id="loginemail" placeholder="e-mail">
-                    <label for="loginpassword">Password:</label>
-                    <input type="password" name="loginpassword" id="loginpassword" placeholder="password">
-                    <input type="submit" value="Login">
-                </form>
-                <div id="login"></div>
-                <script>
-                    document.getElementById('postlogin').addEventListener('submit', function (e) {
-                        e.preventDefault();
-                        fetch('/api/login', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                email: document.getElementById('loginemail').value,
-                                password: document.getElementById('loginpassword').value
-                            })
-                        })
-                            .then(response => response.json())
-                            .then(data => {
-                                document.getElementById('login').innerHTML = `<ul>
-                            <li>${data.message}</li>
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Post login</h2>
+                </div>
+                <div class="panel-content">
+                    <div id="postlogin">
+                        <h3>Logging in</h3>
+                        <form action="/api/login" method="post">
+                            <label for="loginemail">E-mail:</label>
+                            <input type="text" name="loginemail" id="loginemail" placeholder="e-mail">
+                            <label for="loginpassword">Password:</label>
+                            <input type="password" name="loginpassword" id="loginpassword" placeholder="password">
+                            <input type="submit" value="Login">
+                        </form>
+                        <div id="login"></div>
+                        <script>
+                            document.getElementById('postlogin').addEventListener('submit', function (e) {
+                                e.preventDefault();
+                                fetch('/api/login', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        email: document.getElementById('loginemail').value,
+                                        password: document.getElementById('loginpassword').value
+                                    })
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        const token = data.token;
+                                        document.getElementById('login').innerHTML = `<ul>
+                            <li>${data.msg}</li>
+                            <li>${data.token}</li>
                         </ul>`;
+                                    })
                             })
-                    })
-                </script>
+                        </script>
+                    </div>
+
+                </div>
             </div>
-        
-    </div>
-</div>
-<script>
-    document.querySelectorAll('.panel-header').forEach(header => {
-        header.addEventListener('click', () => {
-            header.parentElement.classList.toggle('open');
-        });
-    });
-</script>
+            <script>
+                document.querySelectorAll('.panel-header').forEach(header => {
+                    header.addEventListener('click', () => {
+                        header.parentElement.classList.toggle('open');
+                    });
+                });
+            </script>
 </body>
 
 </html>
