@@ -2,8 +2,6 @@ const server = require('./api/conf/setup');
 const app = server.server;
 const connectDB = server.connectDB();
 
-
-
 const routeGet = require('./api/routes/userGet');
 const routePost = require('./api/routes/userPost');
 const routePatch = require('./api/routes/userUpdate');
@@ -31,21 +29,20 @@ const swaggerOptions = {
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-
 // Rota principal
 /*app.get('/', (req, res) => {
     console.log('[200] OK');
     res.render('index');
-});
-*/
-// Rotas de API
+});*/
+
+// Rotas publicas de API
 app.use('/api', routeGet);
 app.use('/api', routePost);
 app.use('/api', routePatch);
 app.use('/api', routeDelete);
 app.use('/api', routeLogin);
 
-// Rota privada
+// RotaS privada da API
 app.use('/api', routePrivate);
 
 

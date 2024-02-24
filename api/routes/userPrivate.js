@@ -12,35 +12,39 @@ function verifyToken(req, res, next) {
         console.log('[401] Unauthorized');
         return res.status(401).send('Unauthorized');
     }
-    try{
+    try {
         const secret = process.env.SECRET;
         jwt.verify(token, secret, (err, user) => {
             req.user = user;
             next();
         });
-    }catch(err){
+    } catch (err) {
         console.log('[403] Forbidden');
-        return res.status(403).json({msg:'Forbidden'});
+        return res.status(403).json({msg: 'Forbidden'});
     }
 }
 
 /**
-* @swagger
-* /user/{id}:
-*  get:
-*    description: Rota privada para buscar um usuário, necessário token de autenticação
-*    responses:
-*      '201':
-*        description: Uma resposta bem-sucedida
-*      '404':
-*        description: Usuário não encontrado
-*      '401':
-*        description: Não autorizado
-*      '403':
-*        description: Proibido
-*      '500':
-*        description: Erro interno do servidor
-*/
+ * @swagger
+ * /user/{id}:
+ *  get:
+ *    description: Rota privada para buscar um usuário, necessário token de autenticação
+ *    parameters:
+ *    - in: path
+ *    name: id
+ *    required: true
+ *    responses:
+ *      '201':
+ *        description: Uma resposta bem-sucedida
+ *      '404':
+ *        description: Usuário não encontrado
+ *      '401':
+ *        description: Não autorizado
+ *      '403':
+ *        description: Proibido
+ *      '500':
+ *        description: Erro interno do servidor
+ */
 router.get('/user/:id', verifyToken, async (req, res) => {
     const id = req.params.id;
     console.log(id);
