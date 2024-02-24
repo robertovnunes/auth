@@ -2,6 +2,37 @@ const {Router} = require('express');
 const router = Router();
 const User = require('../models/User');
 
+
+/**
+* @swagger
+* /api/user/{id}:
+*  patch:
+*    description: Use para criar um usuário
+*    parameters:
+*      - in: path
+*        name: id
+*        required: true
+*        type: string
+*    requestBody:
+*      required: true
+*      content:
+*        application/json:
+*          schema:
+*            type: object
+*            properties:
+*              name: name
+*              email: email
+*              password: password
+*              cpass: cpass
+*              role: role
+*    responses:
+*      '201':
+*        description: Uma resposta bem-sucedida
+*      '404':
+*        description: Usuário não encontrado
+*      '500':
+*        description: Erro interno do servidor
+*/
 router.patch('/user/:id', async (req, res) => {
     const id = req.params.id;
         try {

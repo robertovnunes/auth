@@ -4,11 +4,41 @@ const bcrypt = require('bcryptjs');
 const router = Router();
 const User = require('../models/User');
 
+/**
+* @swagger
+* /api/user:
+*  post:
+*    description: Use para criar um usuário
+*    parameters:
+*      - in: body
+*        name: user
+*        schema:
+*          type: object
+*          properties:
+*            name:
+*              type: string
+*              required: true
+*            email: 
+*              type: string
+*              required: true
+*            password:
+*              type: string
+*              required: true
+*            cpass:
+*              type: string
+*              required: true
+*    responses:
+*      '201':
+*        description: Uma resposta bem-sucedida
+*      '400':
+*        description: Campos obrigatórios não informados, email já cadastrado ou senhas não conferem
+*      '500':
+*        description: Erro interno do servidor
+*/
 router.post('/user', async (req, res) => {
     try {
         console.log('POST /user');
         let { name, email, password, cpass, role } = req.body;
-        console.log(name, email, password, cpass, role);
         if (!name || !email || !password  || !cpass || !role) {
             if(!name){
                 console.log('400 [BAD REQUEST - NAME MISSING]');

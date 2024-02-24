@@ -33,18 +33,30 @@
                         <script>
                             document.getElementById('btnget').addEventListener('click', function () {
                                 fetch('/api/users')
-                                    .then(response => response.json())
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error('Network response was not ok');
+                                        }
+                                        if (response.status === 200) {
+                                            return response.json();
+                                        } else {
+                                            return [];
+                                        }
+                                    })
                                     .then(data => {
                                         let html = '';
-                                        data.forEach(user => {
-                                            html += `<ul>
-                                                <li>${user.name} ${user.email} ${user.role}</li>
-                                            </ul>`;
-                                        });
+                                        if (!data || data.length === 0) {
+                                            html = '<p>No users found</p>';
+                                        } else {
+                                            data.forEach(user => {
+                                                html += `<ul>
+                                                    <li>${user.name} ${user.email} ${user.role}</li>
+                                                </ul>`;
+                                            });
+                                        }
                                         document.getElementById('allusers').innerHTML = html;
                                         document.getElementById('allusers').style.display = 'block';
-
-                                    })
+                                    });
                             });
                             document.getElementById('btnhide').addEventListener('click', function () {
                                 document.getElementById('allusers').style.display = 'none';
@@ -244,9 +256,9 @@
                                     .then(data => {
                                         const token = data.token;
                                         document.getElementById('login').innerHTML = `<ul>
-                            <li>${data.msg}</li>
-                            <li>${data.token}</li>
-                        </ul>`;
+                                            <li>${data.msg}</li>
+                                            <li>...${data.token.substr(10, 50)}...</li>
+                                        </ul>`;
                                     })
                             })
                         </script>

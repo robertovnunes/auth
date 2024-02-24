@@ -24,6 +24,23 @@ function verifyToken(req, res, next) {
     }
 }
 
+/**
+* @swagger
+* /user/{id}:
+*  get:
+*    description: Rota privada para buscar um usuário, necessário token de autenticação
+*    responses:
+*      '201':
+*        description: Uma resposta bem-sucedida
+*      '404':
+*        description: Usuário não encontrado
+*      '401':
+*        description: Não autorizado
+*      '403':
+*        description: Proibido
+*      '500':
+*        description: Erro interno do servidor
+*/
 router.get('/user/:id', verifyToken, async (req, res) => {
     const id = req.params.id;
     console.log(id);

@@ -11,6 +11,34 @@ function generateToken(user) {
     email: user.email,
   };
 }
+/** 
+* @swagger
+* /api/login:
+*  post:
+*    description: Use para efetuar o login
+*    parameters:
+*    - in: body
+*      name: user
+*      required: true
+*      schema:
+*        type: object
+*        properties:
+*          email: 
+*            type: string
+*            required: true
+*          password:
+*            type: string
+*            required: true
+*    responses:
+*      '200':
+*        description: Uma resposta bem-sucedida
+*      '404':
+*        description: Nem um usuário encontrado
+*      '400': 
+*        description: Email ou senha não informados
+*      '500':
+*        description: Erro interno do servidor
+*/
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
@@ -37,7 +65,7 @@ router.post('/login', async (req, res) => {
     },
       secret,);
       console.log('[OK] User logged in');
-    res.status(200).json({msg: 'Login successful', token: token});
+    res.status(200).json({msg: 'Login successful', token: token, user: user});
   } catch (err) {
     console.log('[500] An error occurred while logging in');
     res.status(500).json({msg: 'An error occurred while logging in'});

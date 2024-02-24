@@ -3,6 +3,26 @@ const router = Router();
 const User = require('../models/User');
 const getuser = require('./userGet');
 
+
+
+/**
+ * @swagger
+ * /api/user/{email}:
+ *  delete:
+ *    description: Use para excluir um usuário pelo email
+ *    parameters:
+ *    - in: path
+ *      name: email
+ *      required: true
+ *      type: string
+ *    responses:
+ *      '200':
+ *        description: Uma resposta bem-sucedida
+ *      '404':
+ *       description: Usuário não encontrado
+ *      '500':
+ *       description: Erro interno do servidor
+ */
 router.delete('/user/:email', async (req, res) => {
     const email = req.params.email;
     try {
