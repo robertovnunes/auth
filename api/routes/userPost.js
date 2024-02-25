@@ -27,6 +27,9 @@ const User = require('../models/User');
 *            cpass:
 *              type: string
 *              required: true
+*            role:
+*              type: string
+*              required: true
 *    responses:
 *      '201':
 *        description: Uma resposta bem-sucedida

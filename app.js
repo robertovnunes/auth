@@ -29,11 +29,6 @@ const swaggerOptions = {
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Rota principal
-/*app.get('/', (req, res) => {
-    console.log('[200] OK');
-    res.render('index');
-});*/
 
 // Rotas publicas de API
 app.use('/api', routeGet);
