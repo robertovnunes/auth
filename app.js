@@ -9,6 +9,8 @@ const routeDelete = require('./api/routes/userDelete');
 const routeLogin = require('./api/routes/userLogin');
 const routePrivate = require('./api/routes/userPrivate');
 
+
+//configuraçãao do swagger | documentação da API
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
@@ -28,7 +30,7 @@ const swaggerOptions = {
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
+// Fim da configuração do swagger
 
 // Rotas publicas de API
 app.use('/api', routeGet);
