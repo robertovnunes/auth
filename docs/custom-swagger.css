@@ -1,0 +1,6 @@
+link[rel="icon"] {
+    background-image: url('favicon.ico');
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.swagger-ui .topbar { display: none }

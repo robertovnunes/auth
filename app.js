@@ -1,6 +1,7 @@
 const server = require('./api/conf/setup');
 const app = server.server;
 const connectDB = server.connectDB();
+const express = require('express');
 
 const routeGet = require('./api/routes/userGet');
 const routePost = require('./api/routes/userPost');
@@ -10,11 +11,11 @@ const routeLogin = require('./api/routes/userLogin');
 const routePrivate = require('./api/routes/userPrivate');
 
 
-//configuraçãao do swagger | documentação da API
+//configuração do swagger | documentação da API
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
-const swaggerOptions = {
+const swaggerConf = {
   swaggerDefinition: {
     info: {
       title: 'AuthAPI',
@@ -28,8 +29,14 @@ const swaggerOptions = {
   apis: ['./api/routes/*.js'],
 };
 
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+const swaggerDocs = swaggerJsDoc(swaggerConf);
+// Serve the custom CSS file
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, {
+    customCss: ".swagger-ui .topbar { display: none }", // Path to your custom CSS
+    customSiteTitle: "Auth API",  // Título personalizado
+    customfavIcon: "/docs/favicon.ico"  // Caminho para o ícone
+}));
 // Fim da configuração do swagger
 
 // Rotas publicas de API
@@ -39,8 +46,9 @@ app.use('/api', routePatch);
 app.use('/api', routeDelete);
 app.use('/api', routeLogin);
 
-// RotaS privada da API
+// Rotas privadas da API
 app.use('/api', routePrivate);
+
 
 
 app.listen(3001, () => {

@@ -2,7 +2,7 @@
   "name": "auth",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node --watch app.js"
   },
@@ -25,6 +25,9 @@
     "react-dom": "^18.2.0",
     "serve-favicon": "^2.5.0",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.0"
+    "swagger-ui": "^5.11.8",
+    "swagger-ui-dist": "^5.11.8",
+    "swagger-ui-express": "^5.0.0",
+    "swagger-ui-themes": "^3.0.1"
   }
 }
