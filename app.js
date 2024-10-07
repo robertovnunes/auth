@@ -3,6 +3,8 @@ const app = server.server;
 const connectDB = server.connectDB();
 const express = require('express');
 
+const port = process.env.PORT || 3000;
+
 const routeGet = require('./api/routes/userGet');
 const routePost = require('./api/routes/userPost');
 const routePatch = require('./api/routes/userUpdate');
@@ -23,7 +25,7 @@ const swaggerConf = {
       contact: {
         name: 'Roberto Nunes'
       },
-      servers: ['http://localhost:3001']
+      servers: [`http://localhost:${port}`]
     }
   },
   apis: ['./api/routes/*.js'],
@@ -51,8 +53,8 @@ app.use('/api', routePrivate);
 
 
 
-app.listen(3001, () => {
+app.listen(port, () => {
     app.locals.db = connectDB;
-    console.log('Server running on port 3001');
+    console.log(`Server running on port ${port}`);
 });
 
